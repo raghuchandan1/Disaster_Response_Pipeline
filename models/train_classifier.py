@@ -81,13 +81,12 @@ def evaluate_model(model, X_test, y_test, category_names):
     """
     # Get results and add them to a dataframe.
     y_pred = model.predict(X_test)
-    # print(classification_report(y_test, y_pred, target_names=category_names))
+    print(classification_report(y_test, y_pred, target_names=category_names))
     # results = pd.DataFrame(columns=['Category', 'f_score', 'precision', 'recall'])
     for i in range(len(category_names)):
         print("Category:", category_names[i], "\n", classification_report(y_test.iloc[:, i].values, y_pred[:, i]))
         print('Accuracy of %25s: %.2f' % (category_names[i], accuracy_score(y_test.iloc[:, i].values, y_pred[:, i])))
 
-    print(model.predict("I need some water please help"))
 
 def save_model(model, model_filepath):
     """Save model as pickle file
