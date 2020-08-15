@@ -40,9 +40,10 @@ def clean_data(df):
         categories_split[column] = categories_split[column].apply(lambda x: x.strip()[-1])
         # convert column from string to numeric
         categories_split[column] = categories_split[column].astype(int)
+        categories_split.loc[categories_split[column] > 1, column] = 1
 
     df.drop('categories', axis=1, inplace=True)
-    df = pd.concat([df,categories_split], axis=1)
+    df = pd.concat([df, categories_split], axis=1)
     df.drop_duplicates(inplace=True)
 
     return df

@@ -37,14 +37,9 @@ def tokenize(text):
     """Tokenize and transform input text.
     Return cleaned text
     """
-    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
-    detected_urls = re.findall(url_regex, text)
-    for url in detected_urls:
-        text = text.replace(url, "urlplaceholder")
-
     # take out all punctuation while tokenizing
-    tokenizer = RegexpTokenizer(r'\w+')
-    tokens = tokenizer.tokenize(text)
+    text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
+    tokens = word_tokenize(text)
 
     # lemmatize as shown in the lesson
     lemmatizer = WordNetLemmatizer()
@@ -63,8 +58,10 @@ def build_model():
         ('clf', MultiOutputClassifier(RandomForestClassifier()))
     ])
 
-    parameters = {'clf__estimator__max_depth': [10, 25],
-                  'clf__estimator__min_samples_leaf': [2, 5, 10]}
+    parameters = {
+        'vect__max_df': (0.5, 1.0),
+        'tfidf__use_idf': (True, False)
+    }
 
     cv = GridSearchCV(pipeline, parameters)
     return cv
@@ -84,8 +81,9 @@ def evaluate_model(model, X_test, y_test, category_names):
     print(classification_report(y_test, y_pred, target_names=category_names))
     # results = pd.DataFrame(columns=['Category', 'f_score', 'precision', 'recall'])
     for i in range(len(category_names)):
-        print("Category:", category_names[i], "\n", classification_report(y_test.iloc[:, i].values, y_pred[:, i]))
-        print('Accuracy of %25s: %.2f' % (category_names[i], accuracy_score(y_test.iloc[:, i].values, y_pred[:, i])))
+        print("classification report for " + y_test.columns[i]
+              , '\n', classification_report(y_test.values[:, i], y_pred[:, i])
+              , '\n accuracy:', accuracy_score(y_test.values[:, i], y_pred[:, i]))
 
 
 def save_model(model, model_filepath):
