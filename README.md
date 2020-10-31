@@ -1,7 +1,8 @@
 # Disaster Response Pipeline Project
 ### Getting Started
-The project tries to classify data into one of the 36 categories used. It tries to classify the message under the correct group so that the message can reach the right target.
-The project also includes a web app where a message from a disaster can be given as input and the web app produces the output showing which categories the message is related to.
+Lots of messages are generated during a disaster requesting for help and support. Due to the overwhelming number of messages which cannot be parsed by a human such may just be stacked without any reach. So if we can classify which type of support the messages points to, then that message can be segregated and forwarded to the respective department and the NGOs dealing with that category and help can be provided much quickly. This project does the same using NLP. 
+The project classifies a given message into one of the 36 disaster management categories. The goal is to classify the message under the correct category so that the message can forwarded to the right target.
+The project includes a web app where a message from a disaster can be given as input and the web app produces the output showing which categories the message is related to.
 
 ### Dependencies
 - scikit-learn
